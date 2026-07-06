@@ -56,13 +56,15 @@ const getSingleProduct = catchAsync(
 
 const updateProduct = catchAsync(
   async (req: Request, res: Response) => {
-    const { id } = req.params;
+  
+   
 
-    const result =
-      await ProductServices.updateProduct(
-        id  as string,
-        req.body
-      );
+    const result = await ProductServices.updateProduct(
+      req.params.id as string,
+      req.body
+    );
+
+    
 
     sendResponse(res, {
       success: true,

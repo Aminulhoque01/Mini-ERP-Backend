@@ -60,7 +60,7 @@ const updateProduct = async (
     id,
     payload,
     {
-      new: true,
+      returnDocument: "after",
       runValidators: true,
     }
   );
