@@ -5,6 +5,8 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import UserRouter from "./modules/user/user.route";
+import AuthRouter from "./modules/auth/auth.route";
+import globalErrorHandler from "./middleware/globalErrorHandler";
 
  
 
@@ -49,6 +51,7 @@ app.get("/", (req, res) => {
 // API Routes
 // =======================
 app.use("/api/users", UserRouter);
+app.use("/api/auth", AuthRouter);
 
 
 
@@ -67,6 +70,8 @@ app.use((req , res) => {
 // =======================
 
 // app.use(errorHandler);
+app.use(globalErrorHandler);
+
 
 // =======================
 // Database Connection
