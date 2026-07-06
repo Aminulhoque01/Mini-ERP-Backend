@@ -7,6 +7,7 @@ import morgan from "morgan";
 import UserRouter from "./modules/user/user.route";
 import AuthRouter from "./modules/auth/auth.route";
 import globalErrorHandler from "./middleware/globalErrorHandler";
+import ProductRoutes from "./modules/product/product.route";
 
  
 
@@ -52,7 +53,7 @@ app.get("/", (req, res) => {
 // =======================
 app.use("/api/users", UserRouter);
 app.use("/api/auth", AuthRouter);
-
+app.use("/api/products", ProductRoutes);
 
 
 // 404 Route

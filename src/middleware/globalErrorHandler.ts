@@ -1,5 +1,5 @@
 import { ErrorRequestHandler } from "express";
-import ApiError from "../utils/ApiError";
+ 
 
 const globalErrorHandler: ErrorRequestHandler = (
   err,
@@ -7,21 +7,13 @@ const globalErrorHandler: ErrorRequestHandler = (
   res,
   next
 ) => {
-  let statusCode = 500;
+  console.error(err);
 
-  let message = "Something went wrong";
-
-  if (err instanceof ApiError) {
-    statusCode = err.statusCode;
-
-    message = err.message;
-  }
-
-  res.status(statusCode).json({
+  res.status(500).json({
     success: false,
-    message,
+    message: err.message,
+    stack: err.stack,
     error: err,
   });
 };
-
 export default globalErrorHandler;
