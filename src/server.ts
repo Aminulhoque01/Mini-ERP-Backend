@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
+import UserRouter from "./modules/user/user.route";
 
  
 
@@ -47,7 +48,7 @@ app.get("/", (req, res) => {
  
 // API Routes
 // =======================
-
+app.use("/api/users", UserRouter);
 
 
 
