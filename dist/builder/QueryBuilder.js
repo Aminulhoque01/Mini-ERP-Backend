@@ -8,10 +8,10 @@ class QueryBuilder {
         this.query = query;
     }
     search(searchFields) {
-        const searchTerm = this.query.searchTerm;
+        const searchTerm = this.query.searchTerm || this.query.search;
         if (searchTerm) {
             this.modelQuery = this.modelQuery.find({
-                $or: searchFields.map(field => ({
+                $or: searchFields.map((field) => ({
                     [field]: {
                         $regex: searchTerm,
                         $options: "i",
@@ -24,22 +24,21 @@ class QueryBuilder {
     filter() {
         const queryObj = { ...this.query };
         const excludeFields = [
+            "search",
             "searchTerm",
             "sortBy",
             "sortOrder",
             "page",
             "limit",
         ];
-        excludeFields.forEach(el => delete queryObj[el]);
+        excludeFields.forEach((el) => delete queryObj[el]);
         this.modelQuery = this.modelQuery.find(queryObj);
         return this;
     }
     sort() {
         const sortBy = this.query.sortBy || "createdAt";
         const sortOrder = this.query.sortOrder || "-1";
-        const sort = sortOrder === "asc"
-            ? sortBy
-            : `-${sortBy}`;
+        const sort = sortOrder === "asc" ? sortBy : `-${sortBy}`;
         this.modelQuery = this.modelQuery.sort(sort);
         return this;
     }

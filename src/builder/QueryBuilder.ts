@@ -4,20 +4,18 @@ class QueryBuilder<T> {
   public modelQuery: Query<T[], T>;
   public query: Record<string, unknown>;
 
-  constructor(
-    modelQuery: Query<T[], T>,
-    query: Record<string, unknown>
-  ) {
+  constructor(modelQuery: Query<T[], T>, query: Record<string, unknown>) {
     this.modelQuery = modelQuery;
     this.query = query;
   }
 
   search(searchFields: string[]) {
-    const searchTerm = this.query.searchTerm as string;
+    const searchTerm =
+      (this.query.searchTerm as string) || (this.query.search as string);
 
     if (searchTerm) {
       this.modelQuery = this.modelQuery.find({
-        $or: searchFields.map(field => ({
+        $or: searchFields.map((field) => ({
           [field]: {
             $regex: searchTerm,
             $options: "i",
@@ -33,14 +31,14 @@ class QueryBuilder<T> {
     const queryObj = { ...this.query };
 
     const excludeFields = [
+      "search",
       "searchTerm",
       "sortBy",
       "sortOrder",
       "page",
       "limit",
     ];
-
-    excludeFields.forEach(el => delete queryObj[el]);
+    excludeFields.forEach((el) => delete queryObj[el]);
 
     this.modelQuery = this.modelQuery.find(queryObj as FilterQuery<T>);
 
@@ -49,13 +47,9 @@ class QueryBuilder<T> {
 
   sort() {
     const sortBy = (this.query.sortBy as string) || "createdAt";
-    const sortOrder =
-      (this.query.sortOrder as string) || "-1";
+    const sortOrder = (this.query.sortOrder as string) || "-1";
 
-    const sort =
-      sortOrder === "asc"
-        ? sortBy
-        : `-${sortBy}`;
+    const sort = sortOrder === "asc" ? sortBy : `-${sortBy}`;
 
     this.modelQuery = this.modelQuery.sort(sort);
 

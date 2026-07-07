@@ -14,6 +14,7 @@ const auth_route_1 = __importDefault(require("./modules/auth/auth.route"));
 const globalErrorHandler_1 = __importDefault(require("./middleware/globalErrorHandler"));
 const product_route_1 = __importDefault(require("./modules/product/product.route"));
 const sales_route_1 = __importDefault(require("./modules/sales/sales.route"));
+const dashboard_route_1 = __importDefault(require("./modules/dashboard/dashboard.route"));
 // Error Handler
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -40,6 +41,7 @@ app.use("/api/users", user_route_1.default);
 app.use("/api/auth", auth_route_1.default);
 app.use("/api/products", product_route_1.default);
 app.use("/api/sales", sales_route_1.default);
+app.use("/api/dashboard", dashboard_route_1.default);
 // 404 Route
 // =======================
 app.use((req, res) => {

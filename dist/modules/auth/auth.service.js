@@ -15,18 +15,25 @@ const login = async (payload) => {
     if (!user) {
         throw new Error("User not found");
     }
-    const match = await bcrypt_1.default.compare(payload.password, user.password);
-    if (!match) {
+    const isPasswordMatched = await bcrypt_1.default.compare(payload.password, user.password);
+    if (!isPasswordMatched) {
         throw new Error("Password is incorrect");
     }
-    const token = (0, jwt_1.createToken)({
+    const accessToken = (0, jwt_1.createToken)({
         id: user._id,
         role: user.role,
         email: user.email,
     });
+    const userData = {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        avatar: user.avatar,
+    };
     return {
-        token,
-        user,
+        accessToken,
+        user: userData,
     };
 };
 exports.AuthService = {

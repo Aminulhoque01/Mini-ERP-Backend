@@ -6,7 +6,6 @@ const login = async (payload: {
   email: string;
   password: string;
 }) => {
-
   const user = await User.findOne({
     email: payload.email,
     isDeleted: false,
@@ -16,24 +15,32 @@ const login = async (payload: {
     throw new Error("User not found");
   }
 
-  const match = await bcrypt.compare(
+  const isPasswordMatched = await bcrypt.compare(
     payload.password,
     user.password
   );
 
-  if (!match) {
+  if (!isPasswordMatched) {
     throw new Error("Password is incorrect");
   }
 
-  const token = createToken({
+  const accessToken = createToken({
     id: user._id,
     role: user.role,
     email: user.email,
   });
 
+  const userData = {
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    avatar: user.avatar,
+  };
+
   return {
-    token,
-    user,
+    accessToken,
+    user: userData,
   };
 };
 
