@@ -8,6 +8,7 @@ import UserRouter from "./modules/user/user.route";
 import AuthRouter from "./modules/auth/auth.route";
 import globalErrorHandler from "./middleware/globalErrorHandler";
 import ProductRoutes from "./modules/product/product.route";
+import SaleRouter from "./modules/sales/sales.route";
 
  
 
@@ -54,6 +55,7 @@ app.get("/", (req, res) => {
 app.use("/api/users", UserRouter);
 app.use("/api/auth", AuthRouter);
 app.use("/api/products", ProductRoutes);
+app.use("/api/sales", SaleRouter);
 
 
 // 404 Route

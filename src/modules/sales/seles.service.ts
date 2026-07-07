@@ -95,6 +95,49 @@ const createSale = async (
   }
 };
 
+const getAllSales = async (query: Record<string, unknown>) => {
+  const page = Number(query.page) || 1;
+  const limit = Number(query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const data = await Sale.find()
+    .populate("soldBy", "name email role")
+    .populate("products.product", "productName sku sellingPrice")
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
+
+  const total = await Sale.countDocuments();
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+      totalPage: Math.ceil(total / limit),
+    },
+    data,
+  };
+};
+
+const getSingleSale = async (id: string) => {
+  const sale = await Sale.findById(id)
+    .populate("soldBy")
+    .populate("products.product");
+  
+  if (!sale) {
+    throw new ApiError(
+      httpStatus.NOT_FOUND,
+      "Sale not found"
+    );
+  }
+
+  return sale;
+};
+
 export const SalesService = {
   createSale,
+  getAllSales,
+  getSingleSale
+
 };
